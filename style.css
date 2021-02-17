@@ -35,5 +35,5 @@ img {
 i {
   color: red;
   font-size: 450px;
-  z-index: 7;
+  z-index: 100;
 }
