@@ -2,16 +2,18 @@
 
 class Game {
 
-  constructor() {
+  constructor(image) {
     this.timeRemaining = 2;
     this.timerRunning = false;
     this.timer = null;
-    this.image = this.getImage();
+    this.image = image;
   }
 
   startGame() {
     document.querySelector('.overlay').style.display = 'none';
+    document.querySelector('#background-img').src = `img/${this.image.name}`;
     this.onTimer();
+
   }
 
   onTimer() {
@@ -37,11 +39,5 @@ class Game {
     return time < 10 ? "0" + time : time;
   }
 
-  getImage() {
-    axios.get('http://my-json-server.typicode.com/youmeSon/wally-data/images')
-    .then(function (response) {
-      return response.data[0]
-    })
-  }
 
 }
