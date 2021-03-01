@@ -7,6 +7,8 @@ class Game {
     this.timerRunning = false;
     this.timer = null;
     this.image = image;
+    this.clockTicking = null;
+    this.popUp = null;
   }
 
   startGame() {
@@ -22,6 +24,7 @@ class Game {
     this.timer = setInterval(() => {
       if(this.timeRemaining <= 0) {
         clearInterval(this.timer);
+        this.gameOver("You Lost!");
         return;
       } 
         this.updateTimeText(--this.timeRemaining);  
@@ -41,11 +44,10 @@ class Game {
   }
 
   tickingSound() {
-    const clockTicking = new Audio('sound/clock-ticking.mp3');
-    clockTicking.loop = true;
-    if(clockTicking) {
-      clockTicking.play();
-    };
+    this.clockTicking = new Audio('sound/clock-ticking.mp3');
+    this.clockTicking.loop = true;
+    this.clockTicking.play();
+    
   };
 
   findingWally(image) {
@@ -62,15 +64,32 @@ class Game {
           location.reload();
         } else if(Math.abs(x - image.xCoordinate) < 0.003 && Math.abs(y - image.yCoordinate) < 0.04) {
           wally.classList.add('active');
-        } else if(!(e.target.classList.contains("start__game") || e.target.classList.contains("start__box"))) {
+        } else if(!(e.target.classList.contains("start__game") || e.target.classList.contains("start__box") ||  e.target.classList.contains("fa-undo") ||e.target.classList.contains("replay"))) {
           tryAgain.classList.add('active');
         }
 
         if(e.target.classList.contains('try-again')) {
           tryAgain.classList.remove('active');
         }
-      
-  
+    })
+  }
+  gameOver(text) {
+    this.popUp = document.querySelector('.pop-up');
+    const popUpText = document.querySelector('.pop-up__text');
+    const alertSound = new Audio('sound/alert.wav');
+    this.clockTicking.pause();
+    alertSound.play();
+    this.popUp.style.visibility = 'visible';
+    popUpText.innerText = text;
+    this.replay();
+  }
+
+  replay() {
+    const replay = document.querySelector('.replay');
+    replay.addEventListener('click', () => {
+      this.popUp.style.visibility = "hidden";
+      this.timeRemaining = 180;
+      this.startGame();
     })
   }
 }
