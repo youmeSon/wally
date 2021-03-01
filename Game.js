@@ -14,6 +14,7 @@ class Game {
     document.querySelector('#background-img').src = `img/${this.image.name}`;
     this.onTimer();
     this.tickingSound();
+    this.findingWally(this.image);
   }
 
   onTimer() {
@@ -47,4 +48,29 @@ class Game {
     };
   };
 
+  findingWally(image) {
+    document.addEventListener('click', function(e) {
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      const x = e.pageX / screenWidth;
+      const y = e.pageY / screenHeight;
+      const wally = document.querySelector('.big-wally');
+      const tryAgain = document.querySelector('.try-again');
+
+
+        if(wally.classList.contains('active')) {
+          location.reload();
+        } else if(Math.abs(x - image.xCoordinate) < 0.003 && Math.abs(y - image.yCoordinate) < 0.04) {
+          wally.classList.add('active');
+        } else if(!(e.target.classList.contains("start__game") || e.target.classList.contains("start__box"))) {
+          tryAgain.classList.add('active');
+        }
+
+        if(e.target.classList.contains('try-again')) {
+          tryAgain.classList.remove('active');
+        }
+      
+  
+    })
+  }
 }
