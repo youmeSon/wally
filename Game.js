@@ -3,7 +3,7 @@
 class Game {
 
   constructor(image) {
-    this.timeRemaining = 2;
+    this.timeRemaining = 180;
     this.timerRunning = false;
     this.timer = null;
     this.image = image;
@@ -13,7 +13,7 @@ class Game {
     document.querySelector('.overlay').style.display = 'none';
     document.querySelector('#background-img').src = `img/${this.image.name}`;
     this.onTimer();
-
+    this.tickingSound();
   }
 
   onTimer() {
@@ -39,5 +39,12 @@ class Game {
     return time < 10 ? "0" + time : time;
   }
 
+  tickingSound() {
+    const clockTicking = new Audio('sound/clock-ticking.mp3');
+    clockTicking.loop = true;
+    if(clockTicking) {
+      clockTicking.play();
+    };
+  };
 
 }
