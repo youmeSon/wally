@@ -2,7 +2,7 @@
 
 class Game {
 
-  constructor(image) {
+  constructor(image, stage) {
     this._timeRemaining = 10;
     this._timerRunning = false;
     this._timer = null;
@@ -11,6 +11,7 @@ class Game {
     this._popUp = null;
     this._popUpText = null;
     this._playBtn = null;
+    this._stage = stage;
   }
 
   get timeRemaining() {
@@ -33,6 +34,10 @@ class Game {
     return this._image;
   }
 
+  set image(value) {
+    this._image = value;
+  }
+
   get clockTicking() {
     return this._clockTicking;
   }
@@ -48,12 +53,16 @@ class Game {
     return this._playBtn;
   }
 
-  startGame() {
+  get stage() {
+    return this._stage;
+  }
+
+  startGame(image) {
     document.querySelector('.overlay').style.display = 'none';
-    document.querySelector('#background-img').src = `img/${this._image.name}`;
+    document.querySelector('#background-img').src = `img/${image.name}`;
     this.startTimer();
     this.tickingSound();
-    this.findingWally(this._image);
+    this.findingWally(image);
   }
 
   startTimer() {
@@ -102,12 +111,12 @@ class Game {
       const tryAgain = document.querySelector('.try-again');
 
         if(wally.classList.contains('active')) {
-          location.reload();
+          wally.classList.remove('active');
         } else if(Math.abs(x - image.xCoordinate) < 0.003 && Math.abs(y - image.yCoordinate) < 0.04) {
           wally.classList.add('active');
           this.nextStage("Next Stage? 🎉")
           this.stopTimer();
-        } else if(!(e.target.classList.contains("start__game") || e.target.classList.contains("start__box") ||  e.target.classList.contains("fa-undo") ||e.target.classList.contains("replay"))) {
+        } else if(!(e.target.classList.contains("start__game") || e.target.classList.contains("start__box") ||e.target.classList.contains("fa-play") ||  e.target.classList.contains("fa-undo") ||e.target.classList.contains("replay"))) {
           tryAgain.classList.add('active');
         }
 
@@ -137,6 +146,7 @@ class Game {
     winSound.play();
     this._popUp.style.visibility = 'visible';
     this._popUpText.innerText = text;
+    
   }
 
   iconChange() {
@@ -144,6 +154,11 @@ class Game {
     icon.classList.add('fa-play');
     icon.classList.remove('fa-undo');
   }
+  nextBtn() {
+    this._popUp = document.querySelector('.pop-up');
+    this._popUp.style.visibility = 'hidden';
+  }
+
 
   replay() {
     this._playBtn = document.querySelector('.replay');
@@ -153,6 +168,8 @@ class Game {
       this.startGame();
     })
   }
+
+
 
   
 }
