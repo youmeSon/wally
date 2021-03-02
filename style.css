@@ -105,6 +105,12 @@ img {
   background-color: wheat;
   border-radius: 10px;
   cursor: pointer;
+  transition: transform 300ms ease-in;
+  border: solid black;
+}
+
+.replay:hover {
+  transform: scale(1.1);
 }
 
 .pop-up__text {
