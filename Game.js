@@ -3,7 +3,7 @@
 class Game {
 
   constructor(image, stage) {
-    this._timeRemaining = 10;
+    this._timeRemaining = 180;
     this._timerRunning = false;
     this._timer = null;
     this._image = image;
@@ -11,6 +11,8 @@ class Game {
     this._popUp = null;
     this._popUpText = null;
     this._playBtn = null;
+    this._replayBtn = null;
+    this._nextBtn = null;
     this._stage = stage;
   }
 
@@ -57,12 +59,31 @@ class Game {
     return this._stage;
   }
 
+  get replayBtn() {
+    return this._replayBtn;
+  }
+
+  get nextBtn() {
+    return this._nextBtn;
+  }
+
   startGame(image) {
     document.querySelector('.overlay').style.display = 'none';
-    document.querySelector('#background-img').src = `img/${image.name}`;
+    document.querySelector('.pop-up').style.visibility = 'hidden';
+    if(image != null){
+      document.querySelector('#background-img').src = `img/${image.name}`;
+    }
     this.startTimer();
     this.tickingSound();
     this.findingWally(image);
+  }
+
+  resetGame(){
+    this._replayBtn.style.display = "none";
+    this._popUp.style.visibility = "hidden";
+    this._timeRemaining = 180;
+    this.startTimer();
+    this.tickingSound();
   }
 
   startTimer() {
@@ -70,7 +91,7 @@ class Game {
     this._timer = setInterval(() => {
       if(this._timeRemaining <= 0) {
         clearInterval(this._timer);
-        this.gameOver("You Lost!");
+        this.gameOver("You Lost😈");
         return;
       } 
         this.updateTimeText(--this._timeRemaining);  
@@ -109,14 +130,18 @@ class Game {
       const y = e.pageY / screenHeight;
       const wally = document.querySelector('.big-wally');
       const tryAgain = document.querySelector('.try-again');
-
+      const popupVisible = document.querySelector('.pop-up').style.visibility == 'visible'
+      const fartSound = new Audio('sound/fart.mp3');
         if(wally.classList.contains('active')) {
           wally.classList.remove('active');
-        } else if(Math.abs(x - image.xCoordinate) < 0.003 && Math.abs(y - image.yCoordinate) < 0.04) {
+        } else if(!popupVisible && Math.abs(x - image.xCoordinate) < 0.003 && Math.abs(y - image.yCoordinate) < 0.04) {
           wally.classList.add('active');
+          tryAgain.classList.remove('active');
           this.nextStage("Next Stage? 🎉")
           this.stopTimer();
-        } else if(!(e.target.classList.contains("start__game") || e.target.classList.contains("start__box") ||e.target.classList.contains("fa-play") ||  e.target.classList.contains("fa-undo") ||e.target.classList.contains("replay"))) {
+        } else if(!popupVisible && Math.abs(x - image.xOdlaw) < 0.003 && Math.abs(y - image.yOdlaw) < 0.04) {
+          fartSound.play();
+        } else if(!popupVisible && !(e.target.classList.contains("start__game") || e.target.classList.contains("start__box") ||e.target.classList.contains("fa-play") ||  e.target.classList.contains("fa-undo") ||e.target.classList.contains("replay") ||e.target.classList.contains("next") || e.target.classList.contains("reload"))) {
           tryAgain.classList.add('active');
         }
 
@@ -127,6 +152,7 @@ class Game {
   } 
   
   gameOver(text) {
+    document.querySelector('.next').style.display = "none";
     this._popUp = document.querySelector('.pop-up');
     this._popUpText = document.querySelector('.pop-up__text');
     const alertSound = new Audio('sound/alert.wav');
@@ -134,42 +160,63 @@ class Game {
     alertSound.play();
     this._popUp.style.visibility = 'visible';
     this._popUpText.innerText = text;
+    this.field();
     this.replay();
+  }
+
+  field() {
+    document.addEventListener('click', () => {
+      console.log('hello');
+    });
+  }
+  onFieldClick() {
+    if(!this._started) {
+      return;
+    }
   }
 
   nextStage(text) {
     this._popUp = document.querySelector('.pop-up');
     this._popUpText = document.querySelector('.pop-up__text');
     const winSound = new Audio('sound/game_win.mp3');
-    this.iconChange();
+    this._timeRemaining = 180;
     this._clockTicking.pause();
     winSound.play();
     this._popUp.style.visibility = 'visible';
     this._popUpText.innerText = text;
-    
+    this.nextBtn();
   }
 
-  iconChange() {
+  iconChangeToPlay() {
     const icon = document.querySelector('.fa-undo');
     icon.classList.add('fa-play');
     icon.classList.remove('fa-undo');
   }
-  nextBtn() {
-    this._popUp = document.querySelector('.pop-up');
-    this._popUp.style.visibility = 'hidden';
+  iconChangeToUndo() {
+    const icon = document.querySelector('.fa-play');
+    icon.classList.add('fa-undo');
+    icon.classList.remove('fa-play');
   }
-
+  
+  nextBtn() {
+    this._nextBtn = document.querySelector('.next');
+    this._nextBtn.style.display = "block"
+  }
 
   replay() {
-    this._playBtn = document.querySelector('.replay');
-    this._playBtn.addEventListener('click', () => {
-      this._popUp.style.visibility = "hidden";
-      this._timeRemaining = 180;
-      this.startGame();
-    })
+    this._replayBtn = document.querySelector('.replay');
+    this._replayBtn.style.display = "block";
   }
 
-
+  theEnd() {
+    const theEnd = document.querySelector('.theEnd');
+    const reload = document.querySelector('.reload');
+    theEnd.style.visibility = 'visible';
+    document.querySelector('.pop-up').style.visibility = 'hidden';
+    reload.addEventListener('click', () => {
+      location.reload();
+    })
+  }
 
   
 }

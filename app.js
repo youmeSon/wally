@@ -1,6 +1,7 @@
 'use strict';
 const startBtn = document.querySelector('.start__box');
-const nextBtn = document.querySelector('.replay');
+let replayBtn = document.querySelector('.replay')
+let nextBtn = document.querySelector('.next');
 let stage = 0;
 
 axios.get('http://my-json-server.typicode.com/youmeSon/wally-data/images')
@@ -12,10 +13,18 @@ axios.get('http://my-json-server.typicode.com/youmeSon/wally-data/images')
         newGame.startGame(response.data[stage]);
       });
 
-      nextBtn.addEventListener('click', () => {
-        stage++;
-        console.log('youme');
-        newGame.startGame(response.data[stage]);
-        nextBtn();
+      replayBtn.addEventListener('click', () => {
+        newGame.resetGame();
       })
-});
+      
+      nextBtn.addEventListener('click', ()=> {
+        console.log(stage);
+        if(stage < 7) {
+          stage++;
+          newGame.startGame(response.data[stage]);
+        } else {
+          newGame.theEnd();
+        }
+      })        
+    })
+
