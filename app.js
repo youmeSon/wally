@@ -4,7 +4,7 @@ let replayBtn = document.querySelector('.replay')
 let nextBtn = document.querySelector('.next');
 let stage = 0;
 
-axios.get('http://my-json-server.typicode.com/youmeSon/wally-data/images')
+axios.get('https://my-json-server.typicode.com/youmeSon/wally-data/images')
     .then(function (response) {
       
       let newGame = new Game(response.data[stage]);
