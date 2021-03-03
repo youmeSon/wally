@@ -3,7 +3,7 @@
 class Game {
 
   constructor(image, stage) {
-    this._timeRemaining = 180;
+    this._timeRemaining = 2;
     this._timerRunning = false;
     this._timer = null;
     this._image = image;
@@ -141,7 +141,7 @@ class Game {
           this.stopTimer();
         } else if(!popupVisible && Math.abs(x - image.xOdlaw) < 0.003 && Math.abs(y - image.yOdlaw) < 0.04) {
           fartSound.play();
-        } else if(!popupVisible && !(e.target.classList.contains("start__game") || e.target.classList.contains("start__box") ||e.target.classList.contains("fa-play") ||  e.target.classList.contains("fa-undo") ||e.target.classList.contains("replay") ||e.target.classList.contains("next") || e.target.classList.contains("reload"))) {
+        } else if(!popupVisible && !(e.target.classList.contains("start__game") || e.target.classList.contains("start__box") ||e.target.classList.contains("fa-play") ||  e.target.classList.contains("fa-undo") ||e.target.classList.contains("replay") ||e.target.classList.contains("next") || e.target.classList.contains('reload'))) {
           tryAgain.classList.add('active');
         }
 
@@ -182,9 +182,10 @@ class Game {
     this._timeRemaining = 180;
     this._clockTicking.pause();
     winSound.play();
+    this.nextBtn();
     this._popUp.style.visibility = 'visible';
     this._popUpText.innerText = text;
-    this.nextBtn();
+    
   }
 
   iconChangeToPlay() {
@@ -211,10 +212,12 @@ class Game {
   theEnd() {
     const theEnd = document.querySelector('.theEnd');
     const reload = document.querySelector('.reload');
+    const triumphSound = new Audio('sound/triumph-sound.mp3')
     theEnd.style.visibility = 'visible';
+    triumphSound.play();
     document.querySelector('.pop-up').style.visibility = 'hidden';
     reload.addEventListener('click', () => {
-      location.reload();
+      location.reload()
     })
   }
 

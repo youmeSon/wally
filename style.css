@@ -46,6 +46,13 @@ button:hover {
   margin-top: 50px;
 }
 
+.logo img.odlaw {
+  width: 400px;
+  height: 200px;
+  position: absolute;
+  transform: translate(-1350px, 500px);
+}
+
 .start__box {
   width: 400px;
   height: 300px;
