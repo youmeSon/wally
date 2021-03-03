@@ -19,7 +19,7 @@ axios.get('http://my-json-server.typicode.com/youmeSon/wally-data/images')
       
       nextBtn.addEventListener('click', ()=> {
         console.log(stage);
-        if(stage < 7) {
+        if(stage < response.data.length - 1) {
           stage++;
           newGame.startGame(response.data[stage]);
         } else {

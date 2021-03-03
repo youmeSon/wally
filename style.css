@@ -50,7 +50,8 @@ button:hover {
   width: 400px;
   height: 200px;
   position: absolute;
-  transform: translate(-1350px, 500px);
+  left: 0;
+  bottom: 0;
 }
 
 .start__box {
@@ -150,8 +151,10 @@ button:hover {
 }
 
 .theEnd__wally img {
-  width: 800px;
+  position: absolute;
+  width: 40%;
   height: auto;
+  right: 0;
 }
 
 .finish__box {

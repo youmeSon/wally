@@ -3,7 +3,7 @@
 class Game {
 
   constructor(image, stage) {
-    this._timeRemaining = 2;
+    this._timeRemaining = 180;
     this._timerRunning = false;
     this._timer = null;
     this._image = image;
