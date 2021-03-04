@@ -48,10 +48,14 @@ button:hover {
 
 .logo img.odlaw {
   width: 400px;
-  height: 200px;
+  height: 150px;
   position: absolute;
   left: 0;
   bottom: 0;
+  transition: transform 600ms ease-in-out;
+}
+.logo img.odlaw:hover {
+  transform: rotate(-30deg) scale(1.1);
 }
 
 .start__box {
