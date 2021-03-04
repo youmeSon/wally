@@ -134,7 +134,7 @@ class Game {
       const fartSound = new Audio('sound/fart.mp3');
         if(wally.classList.contains('active')) {
           wally.classList.remove('active');
-        } else if(!popupVisible && Math.abs(x - image.xCoordinate) < 0.003 && Math.abs(y - image.yCoordinate) < 0.04) {
+        } else if(!popupVisible && Math.abs(x - image.xCoordinate) < 0.003 && Math.abs(y - image.yCoordinate) < 0.02) {
           wally.classList.add('active');
           tryAgain.classList.remove('active');
           this.nextStage("Next Stage? 🎉")
